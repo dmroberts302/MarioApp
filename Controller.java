@@ -20,6 +20,8 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	boolean keyL;
 	boolean keyE = false;
 	boolean start = true;
+	boolean collided;
+	boolean keySpace;
 	
 
 	//	constructor
@@ -43,7 +45,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	public void mousePressed(MouseEvent e)
 	{
 		// Run only in edit mode
-		if (keyE) model.setDestination(e.getX() + view.scrollPos, e.getY());
+		if (keyE) model.addPipe(e.getX() + view.scrollPos, e.getY());
 	}
 
 	public void mouseReleased(MouseEvent e) {    }
@@ -68,6 +70,8 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			case KeyEvent.VK_Q: exit = true; break;
 			case KeyEvent.VK_S: keyS = true; break;
 			case KeyEvent.VK_L: keyL = true; break;
+			case KeyEvent.VK_SPACE: keySpace = true; break;
+
 			
 			// Play & Edit mode 
 			case KeyEvent.VK_E: 
@@ -94,6 +98,10 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			case KeyEvent.VK_Q: exit = false; break;
 			case KeyEvent.VK_S: keyS = false; break;
 			case KeyEvent.VK_L: keyL = false; break;
+			case KeyEvent.VK_SPACE: 
+			model.mario.canJump = false;
+			keySpace = false; break;
+
 		}
 	}
 
@@ -104,6 +112,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	// runs while the game is running
 	void update()
 	{
+
 		// load starting map
 		if (start){
 			model.load("map.json");
@@ -114,14 +123,29 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		if(keyS) model.save("map.json");
 		if(keyL) model.load("map.json");
 		if(exit) System.exit(0);
+		
+		// get previous coordinates incase of collision 
+		model.mario.prevCoordinates();
 		if(keyRight){
+			//if (notCollided)
 			view.scrollPos += 4;
+			// move mario based on moving to the right
+			model.mario.x += 4;
 			view.framePos = (view.framePos + 1) % 5;
 		} 
 		if(keyLeft) {
+			//if (notCollided)
 			view.scrollPos -= 4;
+			// move mario based on moving to the left
+			model.mario.x -= 4;
 			view.framePos = (view.framePos + 1) % 5;
 		} 
+
+		if (keySpace) {
+			if (model.mario.counter <= 30 && model.mario.canJump)
+				model.mario.y -= 20;
+		}
+
 
 	}
 

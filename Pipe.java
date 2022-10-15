@@ -4,16 +4,14 @@ class Pipe
 {
   int x;
   int y;
-  int h;
-  int w;
+  int h = 400;
+  int w = 55;
 
   // Constructor
   Pipe(int x, int y)
   {
     this.x = x;
     this.y = y;
-    this.h = 400;
-    this.w = 55;
   }
 
   // Unmarshals a Pipe from a JSON DOM
@@ -43,7 +41,7 @@ class Pipe
 
   @Override
   public String toString() {
-    return "Pipe (x,y) = (" + x + ", " + y + "), width = " + w + ", height = " + h;
+    return "Pipe (x,y) = (" + this.x + ", " + this.y + "), width = " + this.w + ", height = " + this.h;
   }
 
 }

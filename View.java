@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
-import javax.swing.JButton;
 import java.awt.Color;
 
 class View extends JPanel
@@ -16,6 +15,7 @@ class View extends JPanel
 	int framePos = 0;
 	BufferedImage pipe_image;
 	BufferedImage[] mario_images;
+
 
 	// Constructor
 	View(Controller c, Model m)
@@ -44,6 +44,7 @@ class View extends JPanel
 	// This method is called automatically when the panel needs to be drawn
 	public void paintComponent(Graphics g)
 	{
+		scrollPos = model.mario.x - 100;
 		g.setColor(new Color(128, 255, 255));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
@@ -64,6 +65,6 @@ class View extends JPanel
 		g.drawLine(0, 474, 2000, 474);
 
 		// Draw Mario
-		g.drawImage(mario_images[framePos], model.mario.x + 20, model.mario.y, null);
+		g.drawImage(mario_images[framePos], model.mario.x - this.scrollPos, model.mario.y, null);
 	}
 }

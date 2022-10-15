@@ -2,6 +2,8 @@
 
 import java.util.ArrayList;
 
+
+
 class Model {
 	int x;
 	int y;
@@ -57,6 +59,11 @@ class Model {
 	
 	public void update() {
 		mario.update();
+		for (int i = 0; i < pipes.size(); i++){
+			if (checkCollision(pipes.get(i))){
+				mario.getOutOfPipe(pipes.get(i));
+			};
+		}
 	}
 
 	//	Save the model to a file
@@ -66,7 +73,7 @@ class Model {
 	}
 
 	//	Add or remove a pipe at the destination
-	public void setDestination(int x, int y) {
+	public void addPipe(int x, int y) {
 		this.x = x;
 		this.y = y;
 
@@ -88,5 +95,27 @@ class Model {
 			Pipe p = new Pipe(this.x, this.y);
 			pipes.add(p);
 		}
+
+
+	}
+	
+	
+	public boolean checkCollision(Pipe pipe){
+		
+		// returns true if mario collsion with pipe  
+		if(this.mario.x + this.mario.w < pipe.x)
+			return false;
+
+		if(this.mario.x > pipe.x + pipe.w)
+			return false;
+
+		if(this.mario.y + this.mario.h < pipe.y)
+			return false;
+
+		if(this.mario.y > pipe.y + pipe.y + pipe.h)
+			return false;
+		
+		return true;
+
 	}
 }
